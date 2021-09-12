@@ -1,0 +1,13 @@
+[report]
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
+    if typing.TYPE_CHECKING
+[run]
+branch = True
+omit =
+    */__init__.py
+    fast_rake/tests/conftest.py
+    fast_rake/examples/*
+    fast_rake/version.py
+source = rake
