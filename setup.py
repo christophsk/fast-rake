@@ -33,6 +33,6 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: Natural Language :: English",
         "Topic :: Software Development :: Libraries :: Python Modules",
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.6",
     ],
 )
