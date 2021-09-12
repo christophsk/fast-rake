@@ -15,7 +15,7 @@ with open(path.join(here, "README.md"), encoding="utf-8") as f:
 setup(
     name="fast-rake",
     version=__version__,
-    python_requires=">=3.8.5",
+    python_requires=">=3.6",
     packages=find_packages(exclude=["test*"]),
     include_package_data=False,
     zip_safe=False,
