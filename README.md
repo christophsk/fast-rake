@@ -2,7 +2,7 @@
 
 `fast-rake` is library for keyword extraction built to efficiently process large
 collections of text. The performance gains derive from using optimized regular expressions
-for stop words and Python-specific optimizations.
+for stop words and a few Python-specific optimizations.
 
 The Rapid Automatic Keyword Extraction (RAKE) algorithm is described in
 [Rose, S., et al., (2010)](https://onlinelibrary.wiley.com/doi/10.1002/9780470689646.ch1).
