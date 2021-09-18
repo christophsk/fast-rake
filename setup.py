@@ -27,7 +27,7 @@ setup(
     description="fast-rake: Optimized Keyword Extraction using RAKE",
     long_description=LONG_DESCRIPTION,
     long_description_content_type=LONG_DESCRIPTION_TYPE,
-    keywords="keywords keyword-extraction rake nlp optimized",
+    keywords="keywords keyword-extraction rake natural-language-processing",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
