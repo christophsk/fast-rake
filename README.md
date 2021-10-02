@@ -89,7 +89,7 @@ num files : 511  avg time (10 runs) : 0.0018 secs / file
 # License
 MIT License
 
-Copyright (c) 2017 - 2021, Chris Skiscim
+MIT License Copyright &copy; 2021 Chris Skiscim
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
