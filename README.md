@@ -107,8 +107,19 @@ and includes I/O.
 
 ```
 bbc_news.py -i ~/BBC-Dataset-News-Classification-master/dataset/data_files/sport
+number of documents 511
+run  1, time for 511 documents: 1.08036 secs
+run  2, time for 511 documents: 1.02227 secs
+run  3, time for 511 documents: 1.02087 secs
+run  4, time for 511 documents: 1.02493 secs
+run  5, time for 511 documents: 1.01653 secs
+run  6, time for 511 documents: 1.01568 secs
+run  7, time for 511 documents: 1.01771 secs
+run  8, time for 511 documents: 1.01919 secs
+run  9, time for 511 documents: 1.01602 secs
+run 10, time for 511 documents: 1.01744 secs
 
-num files : 511  avg time (10 runs) : 0.0018 secs / file
+num docs : 511  avg time/doc (10 runs) : 0.0020 secs/doc
 ```
 
 # License

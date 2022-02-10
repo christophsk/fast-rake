@@ -6,17 +6,15 @@ speed test
 optional arguments:
   -h, --help    show this help message and exit
   -i INPUT_DIR
-
-
-BBC News data is available at
-
-https://github.com/suraj-deshmukh/BBC-Dataset-News-Classification
-
-Subdirectory:
-
-BBC-Dataset-News-Classification-master/dataset/data_files/sport
-
 """
+# BBC News data is available at
+#
+# https://github.com/suraj-deshmukh/BBC-Dataset-News-Classification
+#
+# Subdirectory:
+#
+# BBC-Dataset-News-Classification-master/dataset/data_files/sport
+
 import os
 import time
 
@@ -46,7 +44,7 @@ def bbc_news(input_dir):
             )
         )
     print(
-        "\nnum docs : {:,}  avg time/ doc ({} runs) : {:0.4f} secs / doc".format(  # noqa
+        "\nnum docs : {:,}  avg time/doc ({} runs) : {:0.4f} secs/doc".format(
             num_files, n_runs, times / (n_runs * num_files)
         )
     )
