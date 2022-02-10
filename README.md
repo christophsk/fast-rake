@@ -84,17 +84,10 @@ The resulting list, `kw`:
     ]
 ```
 
-Custom stop word list with "smart" stopwords:
-```
->>> smart_rake = Rake(stopword_name="smart", custom_stopwords=["full"])
->>> smart_rake(text)
-
-```
-
 If the `ngram_range` cannot be satisfied, *i.e.*, there are no keywords
-for the lower end of `ngram_range`, a RuntimeWarning is issued.
-An empty list is returned. In this case, reduce the lower end of 
-`ngram_range`.
+for the lower end of `ngram_range`, a `RuntimeWarning` is raised and
+an empty list is returned. The remedy is to reduce the lower end of 
+`ngram_range`. 
 
 ## Example Use Case
 The test set was 511 BBC News "sport" articles 
@@ -112,7 +105,7 @@ num files : 511  avg time (10 runs) : 0.0018 secs / file
 # License
 MIT License
 
-MIT License Copyright &copy; 2021 Chris Skiscim
+MIT License Copyright &copy; 2022 Chris Skiscim
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
