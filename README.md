@@ -84,10 +84,15 @@ The resulting list, `kw`:
     ]
 ```
 
+**N.B.** 
+The algorithm is case-sensitive. In this example, both
+*Compatibility* and *compatibility* are separate keywords.
+
+
 If the `ngram_range` cannot be satisfied, *i.e.*, there are no keywords
 for the lower end of `ngram_range`, a `RuntimeWarning` is raised and
-an empty list is returned. The remedy is to reduce the lower end of 
-`ngram_range`. 
+an empty list is returned. In the example, `ngram_range=(4, 6)` raises
+a warning.
 
 ## Example Use Case
 The test set was 511 BBC News "sport" articles 
