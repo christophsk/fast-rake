@@ -136,6 +136,7 @@ class Rake:
         self.stop_words = stopword_name
         self.custom_stopwords = custom_stopwords
 
+        # be faithful to the original implementation
         self._word_splitter = re.compile("[^a-zA-Z0-9_\\+\\-/]")
         self._sentence_splitter = re.compile(
             "[.!?,;:\t\\\\\"\\(\\)\\'\u2019\u2013]|\\s\\-\\s"

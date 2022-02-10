@@ -18,7 +18,6 @@ BBC-Dataset-News-Classification-master/dataset/data_files/sport
 
 """
 import os
-import sys
 import time
 
 from fast_rake.rake import Rake
