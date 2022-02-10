@@ -144,6 +144,9 @@ class Rake:
         logger.info(
             "{} version {}".format(self.__class__.__name__, self.__version__)
         )
+        if self.ngram_range is not None:
+            if self.ngram_range[1] < self.ngram_range[0]:
+                raise ValueError("improper ngram_range")
 
     def __call__(self, input_text: str) -> List[Tuple[str, float]]:
         """
