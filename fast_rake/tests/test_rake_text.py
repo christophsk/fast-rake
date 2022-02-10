@@ -18,13 +18,7 @@ def check(expected, actual, kw_only):
 
 @pytest.mark.parametrize("top_p", [1.0, 0.01])
 def test_known_stops(
-    text,
-    top_p,
-    supported_stops,
-    nltk_all,
-    google_all,
-    sklearn_all,
-    smart_all,
+    text, top_p, supported_stops, nltk_all, google_all, sklearn_all, smart_all,
 ):
     all_ans = (google_all, nltk_all, sklearn_all, smart_all)
     for stop_name, ans in zip(supported_stops, all_ans):
