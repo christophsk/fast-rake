@@ -30,17 +30,23 @@ def bbc_news(input_dir):
 
     f_list = [os.path.join(input_dir, f) for f in os.listdir(input_dir)]
     num_files = len(f_list)
+    print("number of documents {:,}".format(num_files))
 
     for run in range(n_runs):
+        t_run = time.time()
         for test_file in f_list:
             with open(test_file, encoding="utf-8", errors="ignore") as f:
                 text = f.read()
             start = time.time()
             _ = rake(text)
             times += time.time() - start
-        print("run {:>2d}".format(run + 1))
+        print(
+            "run {:>2d}, time for {:,} documents: {:0.5f} secs".format(
+                run + 1, num_files, time.time() - t_run
+            )
+        )
     print(
-        "\nnum docs : {:,}  avg time / doc ({} runs) : {:0.4f} secs / doc".format(  # noqa
+        "\nnum docs : {:,}  avg time/ doc ({} runs) : {:0.4f} secs / doc".format(  # noqa
             num_files, n_runs, times / (n_runs * num_files)
         )
     )
