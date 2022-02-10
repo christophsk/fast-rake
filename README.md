@@ -91,8 +91,12 @@ The algorithm is case-sensitive. In this example, both
 
 If the `ngram_range` cannot be satisfied, *i.e.*, there are no keywords
 for the lower end of `ngram_range`, a `RuntimeWarning` is raised and
-an empty list is returned. In the example, `ngram_range=(4, 6)` raises
-a warning.
+an empty list is returned. In above example, `ngram_range=(4, 5)` raises
+a warning, *viz.*,
+```bash
+fast_rake/rake.py:189: RuntimeWarning: No keywords for ngram_range (4, 5). Returning empty list.
+  warnings.warn(msg, RuntimeWarning)
+```
 
 ## Example Use Case
 The test set was 511 BBC News "sport" articles 
