@@ -136,6 +136,10 @@ class Rake:
         self.stop_words = stopword_name
         self.custom_stopwords = custom_stopwords
 
+        if self.ngram_range is not None:
+            if self.ngram_range[1] < self.ngram_range[0]:
+                raise ValueError("improper ngram_range")
+
         # be faithful to the original implementation
         self._word_splitter = re.compile("[^a-zA-Z0-9_\\+\\-/]")
         self._sentence_splitter = re.compile(
@@ -144,9 +148,6 @@ class Rake:
         logger.info(
             "{} version {}".format(self.__class__.__name__, self.__version__)
         )
-        if self.ngram_range is not None:
-            if self.ngram_range[1] < self.ngram_range[0]:
-                raise ValueError("improper ngram_range")
 
     def __call__(self, input_text: str) -> List[Tuple[str, float]]:
         """
