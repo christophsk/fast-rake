@@ -1,4 +1,13 @@
 """
+usage: bbc_news.py [-h] [-i INPUT_DIR]
+
+speed test
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -i INPUT_DIR
+
+
 BBC News data is available at
 
 https://github.com/suraj-deshmukh/BBC-Dataset-News-Classification
@@ -9,6 +18,7 @@ BBC-Dataset-News-Classification-master/dataset/data_files/sport
 
 """
 import os
+import sys
 import time
 
 from fast_rake.rake import Rake
@@ -22,15 +32,16 @@ def bbc_news(input_dir):
     f_list = [os.path.join(input_dir, f) for f in os.listdir(input_dir)]
     num_files = len(f_list)
 
-    for _ in range(n_runs):
+    for run in range(n_runs):
         for test_file in f_list:
             with open(test_file, encoding="utf-8", errors="ignore") as f:
                 text = f.read()
             start = time.time()
             _ = rake(text)
             times += time.time() - start
+        print("run {:>2d}".format(run + 1))
     print(
-        "\nnum files : {:,}  avg time ({} runs) : {:0.4f} secs / file".format(
+        "\nnum docs : {:,}  avg time / doc ({} runs) : {:0.4f} secs / doc".format(  # noqa
             num_files, n_runs, times / (n_runs * num_files)
         )
     )

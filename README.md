@@ -16,7 +16,7 @@ The Rapid Automatic Keyword Extraction (RAKE) algorithm is described in
   
 - Python-specific optimizations to speed each step of the algorithm.
   
-- No dependencies.
+- No external dependencies.
 
 ## Test & Install
 If `pytest` is installed, tests can be via:
@@ -31,6 +31,16 @@ python setup.py install
 ```
 
 ## Examples
+The following example is from Rose, et al.:
+> Compatibility of systems of linear constraints over the set of natural numbers. 
+> Criteria of compatibility of a system of linear Diophantine equations, strict 
+> inequations, and nonstrict inequations are considered. Upper bounds for 
+> components of a minimal set of solutions and algorithms of construction of 
+> minimal generating sets of solutions for all types of systems are given. 
+> These criteria and the corresponding algorithms for constructing a minimal 
+> supporting set of solutions can be used in solving all the considered types of 
+> systems and systems of mixed types.
+
 
 The implementation uses `__call__`:
 ```
@@ -39,46 +49,59 @@ The implementation uses `__call__`:
 >>> # default arguments are shown
 >>> smart_rake = Rake(stopword_name="smart", custom_stopwords=None, max_kw=None, ngram_range=None, top_percent=1.0, kw_only=False)
 >>>
->>> text = "My lifeboat is full of eels."
->>> smart_rake(text)
-[('lifeboat', 1.0), ('full', 1.0), ('eels', 1.0)]
+>>> text = "Compatibility of systems of linear constraints over the set of natural numbers. Criteria of compatibility of a system of linear Diophantine equations, strict inequations, and nonstrict inequations are considered. Upper bounds for components of a minimal set of solutions and algorithms of construction of minimal generating sets of solutions for all types of systems are given. These criteria and the corresponding algorithms for constructing a minimal supporting set of solutions can be used in solving all the considered types of systems and systems of mixed types." 
+>>> kw = smart_rake(text)
+```
+The resulting list, `kw`:
+```python
+[
+        ("minimal generating sets", 8.666666666666666),
+        ("linear Diophantine equations", 8.5),
+        ("minimal supporting set", 7.666666666666666),
+        ("minimal set", 4.666666666666666),
+        ("linear constraints", 4.5),
+        ("natural numbers", 4.0),
+        ("strict inequations", 4.0),
+        ("nonstrict inequations", 4.0),
+        ("Upper bounds", 4.0),
+        ("mixed types", 3.666666666666667),
+        ("considered types", 3.166666666666667),
+        ("set", 2.0),
+        ("types", 1.6666666666666667),
+        ("considered", 1.5),
+        ("Compatibility", 1.0),
+        ("systems", 1.0),
+        ("Criteria", 1.0),
+        ("compatibility", 1.0),
+        ("system", 1.0),
+        ("components", 1.0),
+        ("solutions", 1.0),
+        ("algorithms", 1.0),
+        ("construction", 1.0),
+        ("criteria", 1.0),
+        ("constructing", 1.0),
+        ("solving", 1.0),
+    ]
 ```
 
 Custom stop word list with "smart" stopwords:
 ```
 >>> smart_rake = Rake(stopword_name="smart", custom_stopwords=["full"])
 >>> smart_rake(text)
-[('lifeboat', 1.0), ('eels', 1.0)]
+
 ```
 
-Here the `ngram_range` cannot be satisfied triggering a RuntimeWarning.
-An empty list is returned:
-```
->>> smart_rake = Rake(stopword_name="smart, ngram_range=(2, 3))
-smart_rake(text)
-RuntimeWarning: No keywords for ngram_range (2, 3) Returning empty list.
-[]
-```
-
-Change the ngram_range to (1, 3) to avoid an empty list:
-```
->>> smart_rake = Rake(stopword_name="smart, ngram_range=(1, 3), kw_only=True)
->>> smart_rake(text)
-['lifeboat', 'full', 'eels']
-```
-
-Find the top 1% keywords:
-```
->>> smart_rake = Rake(stopword_name="smart, top_percent=0.01, kw_only=True)
->>> smart_rake(text)
-['lifeboat']
-```
+If the `ngram_range` cannot be satisfied, *i.e.*, there are no keywords
+for the lower end of `ngram_range`, a RuntimeWarning is issued.
+An empty list is returned. In this case, reduce the lower end of 
+`ngram_range`.
 
 ## Example Use Case
 The test set was 511 BBC News "sport" articles 
 from [BBC-Dataset-News-Classification]("https://github.com/suraj-deshmukh/BBC-Dataset-News-Classification/blob/master/dataset/data_files/sport")
 (not included). `examples/bbc_news.py` represents a typical use case of 
-finding keywords for each file in a collection. Timing for 10 runs are averaged.
+finding keywords for each file in a collection. Timing for 10 runs are averaged
+and includes I/O.
 
 ```
 bbc_news.py -i ~/BBC-Dataset-News-Classification-master/dataset/data_files/sport
