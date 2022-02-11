@@ -20,7 +20,7 @@ setup(
     include_package_data=False,
     zip_safe=False,
     url="",
-    download_url="",
+    download_url="https://github.com/christophsk/fast-rake",
     license="MIT",
     author="C Skiscim",
     author_email="",
