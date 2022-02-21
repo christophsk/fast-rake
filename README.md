@@ -123,8 +123,6 @@ num docs : 511  avg time/doc (10 runs) : 0.0020 secs/doc
 ```
 
 # License
-MIT License
-
 MIT License Copyright &copy; 2022 Chris Skiscim
 
 Permission is hereby granted, free of charge, to any person obtaining
