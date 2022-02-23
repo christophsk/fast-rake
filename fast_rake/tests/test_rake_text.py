@@ -3,7 +3,7 @@ Test basic functionality
 """
 import logging
 import pytest
-from fast_rake.rake import Rake
+from fast_rake import Rake
 
 logger = logging.getLogger(__name__)
 

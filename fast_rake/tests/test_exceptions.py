@@ -1,5 +1,5 @@
 import pytest
-from fast_rake.rake import Rake
+from fast_rake import Rake
 
 
 def test_bad_sw():

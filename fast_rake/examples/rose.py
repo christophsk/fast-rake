@@ -1,4 +1,4 @@
-from fast_rake.rake import Rake
+from fast_rake import Rake
 from pprint import pprint
 
 text = (

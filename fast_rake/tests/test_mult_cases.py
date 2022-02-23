@@ -3,7 +3,7 @@ Corner cases
 """
 import pytest
 
-from fast_rake.rake import Rake
+from fast_rake import Rake
 
 
 @pytest.mark.parametrize(
