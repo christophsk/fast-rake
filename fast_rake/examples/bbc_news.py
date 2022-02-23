@@ -18,7 +18,7 @@ optional arguments:
 import os
 import time
 
-from fast_rake.rake import Rake
+from fast_rake import Rake
 
 
 def bbc_news(input_dir):

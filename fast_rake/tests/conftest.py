@@ -4,7 +4,7 @@
 import pytest
 import logging
 
-from fast_rake.rake import Rake
+from fast_rake import Rake
 
 log_fmt = "[%(asctime)s %(levelname)-8s] [%(filename)s:%(lineno)s"
 log_fmt += " - %(funcName)s()] %(message)s"
