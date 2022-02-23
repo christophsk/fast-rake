@@ -44,7 +44,7 @@ The following example is from Rose, et al.:
 
 The implementation uses `__call__`:
 ```
->>> from fast_rake.rake import Rake
+>>> from fast_rake import Rake
 >>>
 >>> # default arguments are shown
 >>> smart_rake = Rake(stopword_name="smart", custom_stopwords=None, max_kw=None, ngram_range=None, top_percent=1.0, kw_only=False)
