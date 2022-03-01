@@ -16,6 +16,7 @@ optional arguments:
 # BBC-Dataset-News-Classification-master/dataset/data_files/sport
 
 import os
+import re
 import time
 
 from fast_rake import Rake
@@ -25,6 +26,8 @@ def bbc_news(input_dir):
     n_runs = 10
     rake = Rake(stopword_name="smart")
     times = 0.0
+    nl = "\n"
+    dot = "."
 
     f_list = [os.path.join(input_dir, f) for f in os.listdir(input_dir)]
     num_files = len(f_list)
@@ -35,6 +38,8 @@ def bbc_news(input_dir):
         for test_file in f_list:
             with open(test_file, encoding="utf-8", errors="ignore") as f:
                 text = f.read()
+            # Specific to BBC News: "\n" => sentence
+            text = re.sub(nl, dot, text)
             start = time.time()
             _ = rake(text)
             times += time.time() - start
