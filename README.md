@@ -103,7 +103,7 @@ The test set was 511 BBC News "sport" articles
 from [BBC-Dataset-News-Classification]("https://github.com/suraj-deshmukh/BBC-Dataset-News-Classification/blob/master/dataset/data_files/sport")
 (not included). `examples/bbc_news.py` represents a typical use case of 
 finding keywords for each file in a collection. Timing for 10 runs are averaged
-and includes I/O.
+and includes I/O. YMMV.
 
 ```
 bbc_news.py -i ~/BBC-Dataset-News-Classification-master/dataset/data_files/sport
