@@ -165,12 +165,12 @@ class Rake:
         """
         if not isinstance(input_text, str):
             msg = "input_text must be type str; returning empty list"
-            warnings.warn(msg, RuntimeWarning)
+            warnings.warn(msg, UserWarning)
             return []
 
         if not input_text.strip():
             msg = "input_text is empty; returning empty list"
-            warnings.warn(msg, RuntimeWarning)
+            warnings.warn(msg, UserWarning)
             return []
 
         # algorithm begins
@@ -190,7 +190,7 @@ class Rake:
             )
             msg = "No keywords for ngram_range " + ngrams + ". "
             msg += "Returning empty list."
-            warnings.warn(msg, RuntimeWarning)
+            warnings.warn(msg, UserWarning)
             return []
 
         word_scores, phrase_words = alg.calc_word_scores(
