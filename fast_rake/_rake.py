@@ -99,6 +99,9 @@ class Rake:
     ) -> None:
 
         self.supported_stopwords = ("google", "nltk", "sklearn", "smart")
+        logger.info(
+            "{} version {}".format(self.__class__.__name__, self.__version__)
+        )
 
         if stopword_name not in self.supported_stopwords:
             msg = "Unsupported `stopword_name`; got {}. ".format(stopword_name)
@@ -144,9 +147,6 @@ class Rake:
         self._word_splitter = re.compile("[^a-zA-Z0-9_\\+\\-/]")
         self._sentence_splitter = re.compile(
             "[.!?,;:\t\\\\\"\\(\\)\\'\u2019\u2013]|\\s\\-\\s"
-        )
-        logger.info(
-            "{} version {}".format(self.__class__.__name__, self.__version__)
         )
 
     def __call__(self, input_text: str) -> List[Tuple[str, float]]:
