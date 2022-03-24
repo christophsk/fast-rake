@@ -129,7 +129,7 @@ class Rake:
         self._stop_words_re = stops.load_stopwords(
             stopword_name, custom_stopwords, no_trailing=True,
         )
-        logger.info("        stopword_name : {}".format(stopword_name))
+        logger.info("stopword_name : {}".format(stopword_name))
         logger.info("num custom stop words : {:,}".format(cs_len))
 
         self.ngram_range = ngram_range
@@ -206,9 +206,10 @@ class Rake:
         )
 
         # prepare output
+        num_out = self.max_kw
         if self.max_kw is None:
-            self.max_kw = max(1, int(len(sorted_keywords) * self.top_percent))
+            num_out = max(1, int(len(sorted_keywords) * self.top_percent))
         if self.kw_only:
-            return [kw for kw, _ in sorted_keywords[: self.max_kw]]
+            return [kw for kw, _ in sorted_keywords[: num_out]]
         else:
-            return sorted_keywords[: self.max_kw]
+            return sorted_keywords[: num_out]
