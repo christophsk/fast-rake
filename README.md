@@ -19,15 +19,16 @@ The Rapid Automatic Keyword Extraction (RAKE) algorithm is described in
 - No external dependencies.
 
 ## Test & Install
-If `pytest` is installed, tests can be via:
-
-```bash
-python -m pytest -v
-```
 
 To install:
 ```bash
 python setup.py install
+```
+
+If `pytest` is installed, tests can be run via:
+
+```bash
+python -m pytest -v
 ```
 
 ## Examples
@@ -86,7 +87,7 @@ The resulting list, `kw`:
 
 **N.B.** 
 The algorithm is case-sensitive. In this example, both
-*Compatibility* and *compatibility* are separate keywords.
+*Compatibility* and *compatibility* are considered as separate keywords.
 
 
 If the `ngram_range` cannot be satisfied, *i.e.*, there are no keywords
