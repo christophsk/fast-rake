@@ -20,10 +20,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import logging
+import numbers
 import operator
 import re
 import warnings
-from typing import List, Tuple
+from typing import List, Iterable
 
 import fast_rake.optimized_stop_list as stops
 import fast_rake.rake_alg as alg
@@ -106,24 +107,18 @@ class Rake:
         if stopword_name not in self.supported_stopwords:
             msg = "Unsupported `stopword_name`; got {}. ".format(stopword_name)
             msg += "Please use one of {}".format(self.supported_stopwords)
-            raise ValueError(
-                "unknown `stopword_name`; got {}".format(stopword_name)
-            )
+            raise ValueError(f"unknown `stopword_name`; got {stopword_name}")
         cs_len = 0
         if custom_stopwords is not None:
             if not custom_stopwords:
                 raise ValueError("custom stopword list is empty")
             cs_len = len(custom_stopwords)
         if max_kw is not None:
-            max_kw = int(max_kw)
-            if max_kw < 1:
-                msg = "invalid value for max_kw, got {}".format(max_kw)
-                raise ValueError(msg)
+            if not isinstance(max_kw, numbers.Integral) or max_kw < 1:
+                raise ValueError(f"max_kw must be an integer > 0, got {max_kw}")
         elif top_percent is not None:
             if not 0.0 < top_percent <= 1.0:
-                msg = "top_percent must be between 0 and 1, got {}".format(
-                    top_percent
-                )
+                msg = f"top_percent must be between 0 and 1, got {top_percent}"
                 raise ValueError(msg)
 
         self._stop_words_re = stops.load_stopwords(
@@ -141,7 +136,7 @@ class Rake:
 
         if self.ngram_range is not None:
             if self.ngram_range[1] < self.ngram_range[0]:
-                raise ValueError("improper ngram_range")
+                raise ValueError(f"invalid ngram_range, got {self.ngram_range}")
 
         # be faithful to the original implementation
         self._word_splitter = re.compile("[^a-zA-Z0-9_\\+\\-/]")
@@ -149,7 +144,7 @@ class Rake:
             "[.!?,;:\t\\\\\"\\(\\)\\'\u2019\u2013]|\\s\\-\\s"
         )
 
-    def __call__(self, input_text: str) -> List[Tuple[str, float]]:
+    def __call__(self, input_text: str) -> Iterable:
         """
         Extract and rank the keywords from `input_text`.
 
@@ -158,10 +153,10 @@ class Rake:
                 ranked.
 
         Returns:
-           List[Tuple[str, float]]
+           Iterable: Either List[Tuple[str, float]] or List[str]
 
         Raises:
-            RuntimeWarning
+            UserWarning
         """
         if not isinstance(input_text, str):
             msg = "input_text must be type str; returning empty list"
@@ -185,10 +180,7 @@ class Rake:
                 if self.ngram_range[0] <= len(p.split()) <= self.ngram_range[1]
             ]
         if not phrase_list:
-            ngrams = "({}, {})".format(
-                self.ngram_range[0], self.ngram_range[1]
-            )
-            msg = "No keywords for ngram_range " + ngrams + ". "
+            msg = "No keywords for ngram_range " + str(self.ngram_range) + ". "
             msg += "Returning empty list."
             warnings.warn(msg, UserWarning)
             return []
@@ -204,7 +196,6 @@ class Rake:
             key=operator.itemgetter(1),
             reverse=True,
         )
-
         # prepare output
         num_out = self.max_kw
         if self.max_kw is None:
