@@ -104,28 +104,16 @@ class Rake:
             "{} version {}".format(self.__class__.__name__, self.__version__)
         )
 
-        if stopword_name not in self.supported_stopwords:
-            msg = "Unsupported `stopword_name`; got {}. ".format(stopword_name)
-            msg += "Please use one of {}".format(self.supported_stopwords)
-            raise ValueError(f"unknown `stopword_name`; got {stopword_name}")
-        cs_len = 0
-        if custom_stopwords is not None:
-            if not custom_stopwords:
-                raise ValueError("custom stopword list is empty")
-            cs_len = len(custom_stopwords)
-        if max_kw is not None:
-            if not isinstance(max_kw, numbers.Integral) or max_kw < 1:
-                raise ValueError(f"max_kw must be an integer > 0, got {max_kw}")
-        elif top_percent is not None:
-            if not 0.0 < top_percent <= 1.0:
-                msg = f"top_percent must be between 0 and 1, got {top_percent}"
-                raise ValueError(msg)
+        self._checkargs(
+            stopword_name, custom_stopwords, max_kw, ngram_range, top_percent
+        )
 
         self._stop_words_re = stops.load_stopwords(
             stopword_name, custom_stopwords, no_trailing=True,
         )
-        logger.info("stopword_name : {}".format(stopword_name))
-        logger.info("num custom stop words : {:,}".format(cs_len))
+        logger.info(f"stopword_name : {stopword_name}")
+        if custom_stopwords:
+            logger.info("num custom stop words : {:,}".format(len(custom_stopwords)))
 
         self.ngram_range = ngram_range
         self.max_kw = max_kw
@@ -133,10 +121,6 @@ class Rake:
         self.top_percent = top_percent
         self.stop_words = stopword_name
         self.custom_stopwords = custom_stopwords
-
-        if self.ngram_range is not None:
-            if self.ngram_range[1] < self.ngram_range[0]:
-                raise ValueError(f"invalid ngram_range, got {self.ngram_range}")
 
         # be faithful to the original implementation
         self._word_splitter = re.compile("[^a-zA-Z0-9_\\+\\-/]")
@@ -204,3 +188,25 @@ class Rake:
             return [kw for kw, _ in sorted_keywords[: num_out]]
         else:
             return sorted_keywords[: num_out]
+
+    def _checkargs(
+            self, stops_name, cust_stops, max_kw, ngram_range, top_percent
+    ):
+        if stops_name not in self.supported_stopwords:
+            msg = "Unsupported `stopword_name`; got {}. ".format(stops_name)
+            msg += "Please use one of {}".format(self.supported_stopwords)
+            raise ValueError(f"unknown `stopword_name`; got {stops_name}")
+        if cust_stops is not None:
+            if not cust_stops:
+                raise ValueError("custom stopword list is empty")
+        if max_kw is not None:
+            if not isinstance(max_kw, numbers.Integral) or max_kw < 1:
+                raise ValueError(f"max_kw must be an integer > 0, got {max_kw}")
+        elif top_percent is not None:
+            max_kw = None
+            if not 0.0 < top_percent <= 1.0:
+                msg = f"top_percent must be between 0 and 1, got {top_percent}"
+                raise ValueError(msg)
+        if ngram_range is not None:
+            if ngram_range[1] < ngram_range[0]:
+                raise ValueError(f"invalid ngram_range, got {self.ngram_range}")
