@@ -63,7 +63,7 @@ class Rake:
         ValueError if arguments are incorrect
 
     Examples:
-        >>> from fast_rake.rake import Rake
+        >>> from fast_rake import Rake
         >>>
         >>> rake = Rake(stopword_name="smart", custom_stopwords=None)
         >>>
@@ -109,11 +109,15 @@ class Rake:
         )
 
         self._stop_words_re = stops.load_stopwords(
-            stopword_name, custom_stopwords, no_trailing=True,
+            stopword_name,
+            custom_stopwords,
+            no_trailing=True,
         )
         logger.info(f"stopword_name : {stopword_name}")
         if custom_stopwords:
-            logger.info("num custom stop words : {:,}".format(len(custom_stopwords)))
+            logger.info(
+                "num custom stop words : {:,}".format(len(custom_stopwords))
+            )
 
         self.ngram_range = ngram_range
         self.max_kw = max_kw
@@ -185,13 +189,15 @@ class Rake:
         if self.max_kw is None:
             num_out = max(1, int(len(sorted_keywords) * self.top_percent))
         if self.kw_only:
-            return [kw for kw, _ in sorted_keywords[: num_out]]
+            return [kw for kw, _ in sorted_keywords[:num_out]]
         else:
-            return sorted_keywords[: num_out]
+            return sorted_keywords[:num_out]
 
     def _checkargs(
-            self, stops_name, cust_stops, max_kw, ngram_range, top_percent
+        self, stops_name, cust_stops, max_kw, ngram_range, top_percent
     ):
+        if max_kw is None and top_percent is None:
+            raise ValueError("`max_kw' and `top_percent` cannot both be None")
         if stops_name not in self.supported_stopwords:
             msg = "Unsupported `stopword_name`; got {}. ".format(stops_name)
             msg += "Please use one of {}".format(self.supported_stopwords)
@@ -201,12 +207,17 @@ class Rake:
                 raise ValueError("custom stopword list is empty")
         if max_kw is not None:
             if not isinstance(max_kw, numbers.Integral) or max_kw < 1:
-                raise ValueError(f"max_kw must be an integer > 0, got {max_kw}")
+                raise ValueError(
+                    f"max_kw must be an integer > 0, got {max_kw}"
+                )
         elif top_percent is not None:
-            max_kw = None
+            if not isinstance(top_percent, float):
+                raise TypeError(f"invalid `top_percent`, got {type(top_percent)}")
             if not 0.0 < top_percent <= 1.0:
-                msg = f"top_percent must be between 0 and 1, got {top_percent}"
+                msg = f"top_percent must be in (0, 1], got {top_percent}"
                 raise ValueError(msg)
         if ngram_range is not None:
             if ngram_range[1] < ngram_range[0]:
-                raise ValueError(f"invalid ngram_range, got {self.ngram_range}")
+                raise ValueError(
+                    f"invalid ngram_range, got {self.ngram_range}"
+                )

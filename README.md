@@ -16,7 +16,7 @@ The Rapid Automatic Keyword Extraction (RAKE) algorithm is described in
   
 - Python-specific optimizations to speed each step of the algorithm.
   
-- No external dependencies.
+- Safe for multiprocessing (see `examples/bbc_mp.py`).
 
 ## Test & Install
 
@@ -54,7 +54,7 @@ The implementation uses `__call__`:
 >>> kw = smart_rake(text)
 ```
 The resulting list, `kw`:
-```python
+```bash
 [
         ("minimal generating sets", 8.666666666666666),
         ("linear Diophantine equations", 8.5),
@@ -87,8 +87,7 @@ The resulting list, `kw`:
 
 **N.B.** 
 The algorithm is case-sensitive. In this example, both
-*Compatibility* and *compatibility* are considered as separate keywords.
-
+*Compatibility* and *compatibility* are considered separate keywords.
 
 If the `ngram_range` cannot be satisfied, *i.e.*, there are no keywords
 for the lower end of `ngram_range`, a `RuntimeWarning` is raised and
@@ -100,31 +99,42 @@ fast_rake/rake.py:189: RuntimeWarning: No keywords for ngram_range (4, 5). Retur
 ```
 
 ## Example Use Case
-The test set was 511 BBC News "sport" articles 
+The dataset are 2,225 BBC News articles 
 from [BBC-Dataset-News-Classification]("https://github.com/suraj-deshmukh/BBC-Dataset-News-Classification/blob/master/dataset/data_files/sport")
 (not included). `examples/bbc_news.py` represents a typical use case of 
-finding keywords for each file in a collection. Timing for 10 runs are averaged
-and includes I/O. YMMV.
+finding keywords for each file in a collection.
 
 ```
 bbc_news.py -i ~/BBC-Dataset-News-Classification-master/dataset/data_files/sport
-number of documents 511
-run  1, time for 511 documents: 1.08036 secs
-run  2, time for 511 documents: 1.02227 secs
-run  3, time for 511 documents: 1.02087 secs
-run  4, time for 511 documents: 1.02493 secs
-run  5, time for 511 documents: 1.01653 secs
-run  6, time for 511 documents: 1.01568 secs
-run  7, time for 511 documents: 1.01771 secs
-run  8, time for 511 documents: 1.01919 secs
-run  9, time for 511 documents: 1.01602 secs
-run 10, time for 511 documents: 1.01744 secs
+run  1, time for 2,225 documents: 4.92681 secs
 
-num docs : 511  avg time/doc (10 runs) : 0.0020 secs/doc
+num docs: 2,225  avg num_runs=1  451.61 docs/sec
+```
+Of course, this is an *embarrassingly parallel* task amenable to multiprocessing.
+`bbc_mp.py` demonstrates using `joblib` as the backend. This achieves a ~10x reduction in 
+processing time (YMMV):
+```
+bbc_mp.py --dataset bbc --top-dir /Users/chris/BBC-Dataset-News-Classification/dataset/data_files --njobs -1
+running dataset: bbc
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 8 concurrent workers.
+[Parallel(n_jobs=-1)]: Done   2 tasks        | elapsed:    0.2s
+[Parallel(n_jobs=-1)]: Done  16 tasks        | elapsed:    0.2s
+[Parallel(n_jobs=-1)]: Done  45 tasks        | elapsed:    0.3s
+[Parallel(n_jobs=-1)]: Done 120 tasks        | elapsed:    0.3s
+[Parallel(n_jobs=-1)]: Done 408 tasks        | elapsed:    0.3s
+[Parallel(n_jobs=-1)]: Done 1528 tasks       | elapsed:    0.4s
+[Parallel(n_jobs=-1)]: Done 2092 tasks       | elapsed:    0.4s
+[Parallel(n_jobs=-1)]: Done 2168 tasks       | elapsed:    0.5s
+[Parallel(n_jobs=-1)]: Done 2210 out of 2225 | elapsed:    0.5s remaining:    0.0s
+[Parallel(n_jobs=-1)]: Done 2225 out of 2225 | elapsed:    0.5s finished
+
+num docs: 2,225  time: 0.46857 secs  rate 4748.480 docs/sec
 ```
 
 # License
-MIT License Copyright &copy; 2022 Chris Skiscim
+Copyright &copy; 2022 Chris Skiscim. All rights reserved.
+
+MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

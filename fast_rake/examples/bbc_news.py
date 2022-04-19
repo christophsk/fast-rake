@@ -1,11 +1,14 @@
 """
-usage: bbc_news.py [-h] [-i INPUT_DIR]
+usage: bbc_news.py [-h] [-i INPUT_DIR] [-n NRUNS]
 
-speed test
+BBC news example
 
 optional arguments:
-  -h, --help    show this help message and exit
-  -i INPUT_DIR
+  -h, --help            show this help message and exit
+  -i INPUT_DIR, --input-dir INPUT_DIR
+                        top level directory for BBC news
+  -n NRUNS, --nruns NRUNS
+                        number of runs
 """
 # MIT License
 # Copyright (c) 2017-2022, Chris Skiscim
@@ -30,48 +33,35 @@ optional arguments:
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # ----------
 # BBC News data is available at
-#
 # https://github.com/suraj-deshmukh/BBC-Dataset-News-Classification
-#
-# Subdirectory:
-#
-# BBC-Dataset-News-Classification-master/dataset/data_files/sport
 
-import os
-import re
 import time
 
+import fast_rake.examples.data_readers as readers
 from fast_rake import Rake
 
 
-def bbc_news(input_dir, n_runs=10):
+def bbc_news(input_dir, n_runs):
     rake = Rake(stopword_name="smart")
+
     times = 0.0
-    nl = "\n{1,}"
-    dot = "."
-
-    f_list = [os.path.join(input_dir, f) for f in os.listdir(input_dir)]
-    num_files = len(f_list)
-    print("number of documents {:,}".format(num_files))
-
+    num_files = 0
     for run in range(n_runs):
-        t_run = time.time()
-        for test_file in f_list:
-            with open(test_file, encoding="utf-8", errors="ignore") as f:
-                text = f.read()
-            # Specific to BBC News: "\n" => sentence
-            text = re.sub(nl, dot, text)
-            start = time.time()
-            _ = rake(text)
-            times += time.time() - start
+        num_files = 0
+        start_l = time.time()
+        for _, doc in readers.gen_bbc_title_text(input_dir):
+            _ = rake(doc)
+            num_files += 1
+        loop_t = time.time() - start_l
+        times += loop_t
         print(
             "run {:>2d}, time for {:,} documents: {:0.5f} secs".format(
-                run + 1, num_files, time.time() - t_run
+                run + 1, num_files, loop_t
             )
         )
     print(
-        "\nnum docs : {:,}  avg time/doc ({} runs) : {:0.4f} secs/doc".format(
-            num_files, n_runs, times / (n_runs * num_files)
+        "\nnum docs: {:,}  num_runs={:,}  rate {:0.2f} docs/sec".format(
+            num_files, n_runs, (n_runs * num_files) / times
         )
     )
 
@@ -81,8 +71,21 @@ if __name__ == "__main__":
 
     from argparse import ArgumentParser
 
-    parser = ArgumentParser(description="speed test")
-    parser.add_argument("-i", dest="input_dir")
+    parser = ArgumentParser(description="BBC news example")
+    parser.add_argument(
+        "-i",
+        "--input-dir",
+        dest="input_dir",
+        help="top level directory for BBC news",
+    )
+    parser.add_argument(
+        "-n",
+        "--nruns",
+        dest="nruns",
+        default=1,
+        type=int,
+        help="number of runs",
+    )
     args = parser.parse_args()
 
-    sys.exit(bbc_news(args.input_dir, n_runs=1))
+    sys.exit(bbc_news(args.input_dir, n_runs=args.nruns))
