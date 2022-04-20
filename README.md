@@ -114,7 +114,7 @@ Of course, this is an *embarrassingly parallel* task amenable to multiprocessing
 `bbc_mp.py` demonstrates using `joblib` as the backend. This achieves a ~10x reduction in 
 processing time (YMMV):
 ```
-bbc_mp.py --dataset bbc --top-dir /Users/chris/BBC-Dataset-News-Classification/dataset/data_files --njobs -1
+bbc_mp.py --dataset bbc --top-dir BBC-Dataset-News-Classification/dataset/data_files --njobs -1
 running dataset: bbc
 [Parallel(n_jobs=-1)]: Using backend LokyBackend with 8 concurrent workers.
 [Parallel(n_jobs=-1)]: Done   2 tasks        | elapsed:    0.2s
