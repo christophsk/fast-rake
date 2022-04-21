@@ -3,9 +3,8 @@ import os
 import re
 from fnmatch import fnmatch
 
-# from sklearn.datasets import fetch_20newsgroups
+from sklearn.datasets import fetch_20newsgroups
 
-bbc_pat = "*.txt"
 nl_re = r"\n{1,}"
 dash_re = r"[-_]{2,}"
 space = " "

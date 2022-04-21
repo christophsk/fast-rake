@@ -217,7 +217,7 @@ class Rake:
                 msg = f"top_percent must be in (0, 1], got {top_percent}"
                 raise ValueError(msg)
         if ngram_range is not None:
-            if ngram_range[1] < ngram_range[0]:
+            if len(ngram_range) != 2 or ngram_range[1] < ngram_range[0]:
                 raise ValueError(
                     f"invalid ngram_range, got {self.ngram_range}"
                 )

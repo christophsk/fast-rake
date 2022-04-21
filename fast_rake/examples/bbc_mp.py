@@ -69,9 +69,8 @@ def run_dataset(dataset, top_dir, njobs):
     else:
         raise ValueError(f"no dataset '{dataset}'")
 
-    extract_func = rake_extractor
     doc_kws = Parallel(n_jobs=njobs, prefer="processes", verbose=9)(
-        delayed(extract_func)(doc) for doc in doc_iterable
+        delayed(rake_extractor)(doc) for doc in doc_iterable
     )
     return idx2docid, doc_kws
 

@@ -1,6 +1,6 @@
 # `fast-rake`
 
-`fast-rake` is library for keyword extraction built to efficiently process large
+`fast-rake` is library for unsupervised keyword extraction built to efficiently process large
 collections of text. The performance gains derive from using optimized regular expressions
 for stop words and a few Python-specific optimizations.
 
@@ -111,8 +111,9 @@ run  1, time for 2,225 documents: 4.92681 secs
 num docs: 2,225  avg num_runs=1  451.61 docs/sec
 ```
 Of course, this is an *embarrassingly parallel* task amenable to multiprocessing.
-`bbc_mp.py` demonstrates using `joblib` as the backend. This achieves a ~10x reduction in 
-processing time (YMMV):
+`bbc_mp.py` demonstrates multiprocessing using `joblib` as the backend (you must
+install `joblib` to run this example). This achieves 
+a ~10x reduction in processing time (YMMV):
 ```
 bbc_mp.py --dataset bbc --top-dir BBC-Dataset-News-Classification/dataset/data_files --njobs -1
 running dataset: bbc
